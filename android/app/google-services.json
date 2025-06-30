@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "733880056350",
-    "project_id": "lab-test-sabrina",
-    "storage_bucket": "lab-test-sabrina.firebasestorage.app"
+    "project_number": "13016396620",
+    "project_id": "lab-test-izzati",
+    "storage_bucket": "lab-test-izzati.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:733880056350:android:b7beefa1fbb01d5de74c0f",
+        "mobilesdk_app_id": "1:13016396620:android:0151d3e9451a0dc54815e9",
         "android_client_info": {
-          "package_name": "com.example.flutter_lab_sabrina"
+          "package_name": "com.example.lab_test_izzati"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDw944E6vTBEeQuxzoYAHT5nWs-8OAT7tM"
+          "current_key": "AIzaSyDCs3kIazeCTz2SXKd7a_bQa1y55DWd70Q"
         }
       ],
       "services": {
