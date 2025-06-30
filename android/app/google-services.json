@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "733880056350",
+    "project_id": "lab-test-sabrina",
+    "storage_bucket": "lab-test-sabrina.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:733880056350:android:b7beefa1fbb01d5de74c0f",
+        "android_client_info": {
+          "package_name": "com.example.flutter_lab_sabrina"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDw944E6vTBEeQuxzoYAHT5nWs-8OAT7tM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
