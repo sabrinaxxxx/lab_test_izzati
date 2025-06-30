@@ -22,17 +22,11 @@ class _StaffState extends State<Staff> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 800),
+      duration: const Duration(milliseconds: 600),
     );
-
-    _fadeAnimation = Tween<double>(
-      begin: 0,
-      end: 1,
-    ).animate(_animationController);
-
+    _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(_animationController);
     _animationController.forward();
   }
 
@@ -48,60 +42,52 @@ class _StaffState extends State<Staff> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.pink.shade50,
+      backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-        backgroundColor: Colors.pink.shade300,
+        backgroundColor: Colors.blueGrey.shade800,
         centerTitle: true,
         title: const Text(
-          "Staff Form",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          "Staff Registration",
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 1.1,
+          ),
         ),
       ),
       body: FadeTransition(
         opacity: _fadeAnimation,
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 30),
             child: Form(
               key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   buildTextField(
-                    "Name",
-                    "Enter your name",
-                    nameController,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Name is required';
-                      }
-                      return null;
-                    },
+                    label: "Staff Name",
+                    hint: "Enter full name",
+                    controller: nameController,
+                    validator: (value) =>
+                        value == null || value.isEmpty ? 'Name is required' : null,
                   ),
-
                   const SizedBox(height: 25),
                   buildTextField(
-                    "ID Staff",
-                    "Enter your ID",
-                    idController,
-                    validator: (value) {
-                      if (value == null || value.length < 3) {
-                        return 'ID must be at least 3 characters';
-                      }
-                      return null;
-                    },
+                    label: "Staff ID",
+                    hint: "Enter ID",
+                    controller: idController,
+                    validator: (value) =>
+                        value == null || value.length < 3 ? 'ID must be at least 3 characters' : null,
                   ),
-
                   const SizedBox(height: 25),
                   buildTextField(
-                    "Age",
-                    "Enter your age",
-                    ageController,
+                    label: "Age",
+                    hint: "Enter age",
+                    controller: ageController,
                     keyboard: TextInputType.number,
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Age is required';
-                      }
+                      if (value == null || value.isEmpty) return 'Age is required';
                       int? age = int.tryParse(value);
                       if (age == null || age < 18 || age > 65) {
                         return 'Age must be between 18 and 65';
@@ -109,55 +95,51 @@ class _StaffState extends State<Staff> with SingleTickerProviderStateMixin {
                       return null;
                     },
                   ),
-
-                  const SizedBox(height: 35),
+                  const SizedBox(height: 40),
                   Center(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.pink.shade300,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 40,
-                          vertical: 12,
-                        ),
+                        backgroundColor: Colors.blueGrey.shade800,
+                        padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 14),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        elevation: 5,
+                        elevation: 4,
                       ),
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
-                          // ignore: non_constant_identifier_names
-                          String Id = randomAlphaNumeric(10);
-
-                          Map<String, dynamic> staffInfoMap = {
+                          String randomId = randomAlphaNumeric(10);
+                          Map<String, dynamic> staffData = {
                             "Name": nameController.text.trim(),
                             "ID Staff": idController.text.trim(),
                             "Age": ageController.text.trim(),
-                            "Id": Id,
+                            "Id": randomId,
                           };
 
                           await DatabaseMethods()
-                              .addStaffDetails(staffInfoMap, Id)
-                              .then((value) {
-                                Fluttertoast.showToast(
-                                  msg: "Staff details uploaded successfully.",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.BOTTOM,
-                                  backgroundColor: Colors.green.shade600,
-                                  textColor: Colors.white,
-                                  fontSize: 16.0,
-                                );
-                                nameController.clear();
-                                idController.clear();
-                                ageController.clear();
-                              });
+                              .addStaffDetails(staffData, randomId)
+                              .then((_) {
+                            Fluttertoast.showToast(
+                              msg: "Staff record added successfully.",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              backgroundColor: Colors.green.shade700,
+                              textColor: Colors.white,
+                              fontSize: 16.0,
+                            );
+                            nameController.clear();
+                            idController.clear();
+                            ageController.clear();
+                          });
                         }
                       },
                       child: const Text(
-                        "Add",
+                        "Submit",
                         style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 1.1,
+                          color: Colors.white,
                         ),
                       ),
                     ),
@@ -171,10 +153,10 @@ class _StaffState extends State<Staff> with SingleTickerProviderStateMixin {
     );
   }
 
-  Widget buildTextField(
-    String label,
-    String hint,
-    TextEditingController controller, {
+  Widget buildTextField({
+    required String label,
+    required String hint,
+    required TextEditingController controller,
     TextInputType keyboard = TextInputType.text,
     String? Function(String?)? validator,
   }) {
@@ -184,27 +166,27 @@ class _StaffState extends State<Staff> with SingleTickerProviderStateMixin {
         Text(
           label,
           style: TextStyle(
-            color: Colors.pink.shade800,
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
+            color: Colors.blueGrey.shade700,
+            fontSize: 16.0,
+            fontWeight: FontWeight.w500,
           ),
         ),
         const SizedBox(height: 8),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 12),
           decoration: BoxDecoration(
             color: Colors.white,
-            border: Border.all(color: Colors.pink.shade200),
-            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: Colors.blueGrey.shade200),
+            borderRadius: BorderRadius.circular(8),
           ),
           child: TextFormField(
             controller: controller,
             keyboardType: keyboard,
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              hintText: hint,
-            ),
             validator: validator,
+            decoration: InputDecoration(
+              hintText: hint,
+              border: InputBorder.none,
+            ),
           ),
         ),
       ],
